@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nishith.models.Brand;
+import com.nishith.models.Currency;
 import com.nishith.models.Product;
 import com.nishith.repository.ProductRepository;
 
@@ -19,7 +20,9 @@ public class ProductService {
     private final CurrencyService currencyService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, BrandService brandService, CurrencyService currencyService) {
+    public ProductService(ProductRepository productRepository,
+                          BrandService brandService,
+                          CurrencyService currencyService) {
         this.productRepository = productRepository;
         this.brandService = brandService;
         this.currencyService = currencyService;
@@ -32,10 +35,13 @@ public class ProductService {
 
     protected void resolveBrandByName(Product product) {
         Optional<Brand> brandOptional = brandService.getBrandByName(product.getBrand().getName());
-        brandOptional.ifPresent(product::setBrand);
+        Brand brand = brandOptional.orElseGet(() -> brandService.addBrand(product.getBrand()));
+        product.setBrand(brand);
     }
 
     protected void resolveCurrencyByName(Product product) {
-        currencyService.getCurrencyByName(product.getCurrency().getName());
+        Optional<Currency> currencyOptional = currencyService.getCurrencyByName(product.getCurrency().getName());
+        Currency currency = currencyOptional.orElseGet(() -> currencyService.addCurrency(product.getCurrency()));
+        product.setCurrency(currency);
     }
 }

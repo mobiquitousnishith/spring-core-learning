@@ -21,4 +21,8 @@ public class BrandService {
     public Optional<Brand> getBrandByName(String brandName) {
         return brandRepository.findByName(brandName);
     }
+
+    public Brand addBrand(Brand brand) {
+        return brandRepository.addBrand(brand);
+    }
 }

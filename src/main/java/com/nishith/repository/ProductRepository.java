@@ -32,7 +32,7 @@ public class ProductRepository extends AbstractInventoryRepository {
 
     private final BrandRepository brandRepository;
 
-    private SimpleJdbcInsert productInsert;
+    private final SimpleJdbcInsert productInsert;
 
 
     @Autowired

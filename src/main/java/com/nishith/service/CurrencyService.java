@@ -21,4 +21,8 @@ public class CurrencyService {
     public Optional<Currency> getCurrencyByName(String currencyName) {
         return currencyRepository.findByName(currencyName);
     }
+
+    public Currency addCurrency(Currency currency) {
+        return currencyRepository.addCurrency(currency);
+    }
 }

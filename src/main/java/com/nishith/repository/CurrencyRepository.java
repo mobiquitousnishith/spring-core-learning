@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import com.nishith.extractor.CurrencyExtractor;
 import com.nishith.mapper.CurrencyRowMapper;
 import com.nishith.models.Currency;
 
@@ -26,10 +27,15 @@ public class CurrencyRepository extends AbstractInventoryRepository {
 
     private final SimpleJdbcInsert currencyInsert;
 
-    public CurrencyRepository(JdbcTemplate jdbcTemplate, CurrencyRowMapper currencyRowMapper) {
+    private final CurrencyExtractor currencyExtractor;
+
+    public CurrencyRepository(JdbcTemplate jdbcTemplate,
+                              CurrencyRowMapper currencyRowMapper,
+                              CurrencyExtractor currencyExtractor) {
         super(jdbcTemplate);
         this.jdbcTemplate = jdbcTemplate;
         this.currencyRowMapper = currencyRowMapper;
+        this.currencyExtractor = currencyExtractor;
         currencyInsert = new SimpleJdbcInsert(this.jdbcTemplate)
                 .withTableName(TBL_CURRENCY)
                 .usingColumns(CLM_NAME, CLM_DESCRIPTION)
@@ -38,7 +44,7 @@ public class CurrencyRepository extends AbstractInventoryRepository {
 
     public Optional<Currency> findByName(@NonNull String currencyName) {
         return Optional
-                .ofNullable(jdbcTemplate.queryForObject(QRY_CURRENCY_BY_NAME, currencyRowMapper, currencyName));
+                .ofNullable(jdbcTemplate.query(QRY_CURRENCY_BY_NAME, currencyExtractor, currencyName));
     }
 
     public Currency addCurrency(Currency currency) {

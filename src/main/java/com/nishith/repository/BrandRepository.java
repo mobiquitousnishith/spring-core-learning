@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import com.nishith.extractor.BrandExtractor;
 import com.nishith.mapper.BrandRowMapper;
 import com.nishith.models.Brand;
 
@@ -27,8 +28,10 @@ public class BrandRepository extends AbstractInventoryRepository {
 
     private final SimpleJdbcInsert brandInsert;
 
+    private final BrandExtractor brandExtractor;
+
     @Autowired
-    public BrandRepository(JdbcTemplate jdbcTemplate, BrandRowMapper brandRowMapper) {
+    public BrandRepository(JdbcTemplate jdbcTemplate, BrandRowMapper brandRowMapper, BrandExtractor brandExtractor) {
         super(jdbcTemplate);
         this.jdbcTemplate = jdbcTemplate;
         this.brandRowMapper = brandRowMapper;
@@ -36,10 +39,11 @@ public class BrandRepository extends AbstractInventoryRepository {
                 .withTableName(TBL_BRAND)
                 .usingColumns(CLM_NAME, CLM_DESCRIPTION)
                 .usingGeneratedKeyColumns(CLM_ID);
+        this.brandExtractor = brandExtractor;
     }
 
     public Optional<Brand> findByName(@NonNull String brandName) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(QRY_BRAND_BY_NAME, brandRowMapper, brandName));
+        return Optional.ofNullable(jdbcTemplate.query(QRY_BRAND_BY_NAME, brandExtractor, brandName));
     }
 
     public Brand addBrand(Brand brand) {

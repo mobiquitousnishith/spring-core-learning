@@ -30,6 +30,7 @@ public class ProductService {
 
     public Product addProduct(Product product) {
         resolveBrandByName(product);
+        resolveCurrencyByName(product);
         return productRepository.addProduct(product);
     }
 

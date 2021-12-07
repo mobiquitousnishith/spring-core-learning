@@ -19,11 +19,11 @@ create table brand
 create table product
 (
     id          bigint primary key default nextval('seq_brand'),
-    name        varchar(64) not null,
+    name        varchar(64)      not null,
     description varchar(512),
-    price       bigint      not null,
-    brand_id    bigint      not null,
-    currency_id bigint      not null,
+    price       double precision not null,
+    brand_id    bigint           not null,
+    currency_id bigint           not null,
     constraint uk_product_id_brand_id unique (name, brand_id),
     constraint fk_product_brand_id foreign key (brand_id) references brand (id),
     constraint fk_product_currency_id foreign key (currency_id) references currency (id)

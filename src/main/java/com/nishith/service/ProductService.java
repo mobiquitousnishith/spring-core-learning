@@ -1,5 +1,6 @@
 package com.nishith.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class ProductService {
         resolveBrandByName(product);
         resolveCurrencyByName(product);
         return productRepository.addProduct(product);
+    }
+
+    public void addProducts(List<Product> products) {
+        productRepository.addProducts(products);
     }
 
     protected void resolveBrandByName(Product product) {

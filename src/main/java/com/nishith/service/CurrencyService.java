@@ -1,5 +1,6 @@
 package com.nishith.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,9 @@ public class CurrencyService {
 
     public Currency addCurrency(Currency currency) {
         return currencyRepository.addCurrency(currency);
+    }
+
+    public void addCurrencies(List<Currency> currencies) {
+        currencyRepository.addCurrencies(currencies);
     }
 }

@@ -1,5 +1,6 @@
 package com.nishith.repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,9 +13,11 @@ import com.nishith.extractor.CurrencyExtractor;
 import com.nishith.mapper.CurrencyRowMapper;
 import com.nishith.models.Currency;
 
+import static com.nishith.constants.DatabaseConstants.BATCH_SIZE;
 import static com.nishith.constants.DatabaseConstants.CLM_DESCRIPTION;
 import static com.nishith.constants.DatabaseConstants.CLM_ID;
 import static com.nishith.constants.DatabaseConstants.CLM_NAME;
+import static com.nishith.constants.DatabaseConstants.INSERT_BRAND;
 import static com.nishith.constants.DatabaseConstants.QRY_CURRENCY_BY_NAME;
 import static com.nishith.constants.DatabaseConstants.TBL_CURRENCY;
 
@@ -52,6 +55,10 @@ public class CurrencyRepository extends AbstractInventoryRepository {
         Number primaryKey = currencyInsert.executeAndReturnKey(params);
         currency.setId(primaryKey.longValue());
         return currency;
+    }
+
+    public int[][] addCurrencies(List<Currency> currencies) {
+        return jdbcTemplate.batchUpdate(INSERT_BRAND, currencies, BATCH_SIZE, currencyRowMapper);
     }
 
 }

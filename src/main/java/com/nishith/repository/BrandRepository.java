@@ -1,5 +1,6 @@
 package com.nishith.repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,9 +14,11 @@ import com.nishith.extractor.BrandExtractor;
 import com.nishith.mapper.BrandRowMapper;
 import com.nishith.models.Brand;
 
+import static com.nishith.constants.DatabaseConstants.BATCH_SIZE;
 import static com.nishith.constants.DatabaseConstants.CLM_DESCRIPTION;
 import static com.nishith.constants.DatabaseConstants.CLM_ID;
 import static com.nishith.constants.DatabaseConstants.CLM_NAME;
+import static com.nishith.constants.DatabaseConstants.INSERT_BRAND;
 import static com.nishith.constants.DatabaseConstants.QRY_BRAND_BY_NAME;
 import static com.nishith.constants.DatabaseConstants.TBL_BRAND;
 
@@ -52,4 +55,9 @@ public class BrandRepository extends AbstractInventoryRepository {
         brand.setId(primaryKey.longValue());
         return brand;
     }
+
+    public int[][] addBrands(List<Brand> brands) {
+        return jdbcTemplate.batchUpdate(INSERT_BRAND, brands, BATCH_SIZE, brandRowMapper);
+    }
+
 }

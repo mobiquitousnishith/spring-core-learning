@@ -1,8 +1,11 @@
 package com.nishith.mapper;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
 import com.nishith.models.Product;
@@ -14,7 +17,7 @@ import static com.nishith.constants.DatabaseConstants.CLM_NAME;
 import static com.nishith.constants.DatabaseConstants.CLM_PRICE;
 
 @Component
-public class ProductMapper {
+public class ProductRowMapper implements ParameterizedPreparedStatementSetter<Product> {
 
     public Map<String, Object> map(Product product) {
         Map<String, Object> productMap = new HashMap<>();
@@ -24,5 +27,14 @@ public class ProductMapper {
         productMap.put(CLM_PRICE, product.getPrice());
         productMap.put(CLM_CURRENCY_ID, product.getCurrency().getId());
         return productMap;
+    }
+
+    @Override
+    public void setValues(PreparedStatement ps, Product product) throws SQLException {
+        ps.setString(1, product.getName());
+        ps.setString(2, product.getDescription());
+        ps.setDouble(3, product.getPrice());
+        ps.setLong(4, product.getBrand().getId());
+        ps.setLong(5, product.getCurrency().getId());
     }
 }

@@ -1,5 +1,6 @@
 package com.nishith.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,9 @@ public class BrandService {
 
     public Brand addBrand(Brand brand) {
         return brandRepository.addBrand(brand);
+    }
+
+    public void addBrands(List<Brand> brands) {
+        brandRepository.addBrands(brands);
     }
 }

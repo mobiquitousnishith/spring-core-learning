@@ -1,7 +1,7 @@
 package com.nishith.repository;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,16 +9,17 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
-import com.nishith.mapper.ProductMapper;
-import com.nishith.models.Brand;
+import com.nishith.mapper.ProductRowMapper;
 import com.nishith.models.Product;
 
+import static com.nishith.constants.DatabaseConstants.BATCH_SIZE;
 import static com.nishith.constants.DatabaseConstants.CLM_BRAND_ID;
 import static com.nishith.constants.DatabaseConstants.CLM_CURRENCY_ID;
 import static com.nishith.constants.DatabaseConstants.CLM_DESCRIPTION;
 import static com.nishith.constants.DatabaseConstants.CLM_ID;
 import static com.nishith.constants.DatabaseConstants.CLM_NAME;
 import static com.nishith.constants.DatabaseConstants.CLM_PRICE;
+import static com.nishith.constants.DatabaseConstants.INSERT_BRAND;
 import static com.nishith.constants.DatabaseConstants.TBL_PRODUCT;
 
 @Repository
@@ -28,7 +29,7 @@ public class ProductRepository extends AbstractInventoryRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final ProductMapper productMapper;
+    private final ProductRowMapper productRowMapper;
 
     private final BrandRepository brandRepository;
 
@@ -36,11 +37,11 @@ public class ProductRepository extends AbstractInventoryRepository {
 
 
     @Autowired
-    public ProductRepository(JdbcTemplate jdbcTemplate, ProductMapper productMapper, BrandRepository brandRepository) {
+    public ProductRepository(JdbcTemplate jdbcTemplate, ProductRowMapper productRowMapper, BrandRepository brandRepository) {
         super(jdbcTemplate);
         this.jdbcTemplate = jdbcTemplate;
         this.productInsert = new SimpleJdbcInsert(this.jdbcTemplate).withTableName(TBL_PRODUCT).usingColumns(CLM_NAME, CLM_DESCRIPTION, CLM_PRICE, CLM_BRAND_ID, CLM_CURRENCY_ID).usingGeneratedKeyColumns(CLM_ID);
-        this.productMapper = productMapper;
+        this.productRowMapper = productRowMapper;
         this.brandRepository = brandRepository;
     }
 
@@ -49,10 +50,13 @@ public class ProductRepository extends AbstractInventoryRepository {
     }
 
     public Product addProduct(@NonNull Product product) {
-        Map<String, Object> params = productMapper.map(product);
+        Map<String, Object> params = productRowMapper.map(product);
         Number primaryKey = productInsert.executeAndReturnKey(params);
         product.setId(primaryKey.longValue());
         return product;
     }
 
+    public int[][] addProducts(@NonNull List<Product> products) {
+        return jdbcTemplate.batchUpdate(INSERT_BRAND, products, BATCH_SIZE, productRowMapper);
+    }
 }

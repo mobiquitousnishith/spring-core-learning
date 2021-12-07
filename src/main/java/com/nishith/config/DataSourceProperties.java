@@ -17,6 +17,16 @@ public class DataSourceProperties {
 
     private String driver;
 
+    private int batchSize;
+
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
+    }
+
     public String getUrl() {
         return url;
     }

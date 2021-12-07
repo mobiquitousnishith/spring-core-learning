@@ -1,10 +1,12 @@
 package com.nishith.mapper;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +17,7 @@ import static com.nishith.constants.DatabaseConstants.CLM_ID;
 import static com.nishith.constants.DatabaseConstants.CLM_NAME;
 
 @Component
-public class CurrencyRowMapper implements RowMapper<Currency> {
+public class CurrencyRowMapper implements RowMapper<Currency>, ParameterizedPreparedStatementSetter<Currency> {
 
     @Override
     public Currency mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -27,5 +29,11 @@ public class CurrencyRowMapper implements RowMapper<Currency> {
         currencyMap.put(CLM_NAME, currency.getName());
         currencyMap.put(CLM_DESCRIPTION, currency.getDescription());
         return currencyMap;
+    }
+
+    @Override
+    public void setValues(PreparedStatement ps, Currency currency) throws SQLException {
+        ps.setString(1, currency.getName());
+        ps.setString(2, currency.getDescription());
     }
 }

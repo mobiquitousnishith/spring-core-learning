@@ -19,6 +19,13 @@ public class DatabaseConstants {
     public static final String QRY_BRAND_BY_NAME = "SELECT * FROM brand WHERE name ilike ?";
     public static final String QRY_CURRENCY_BY_NAME = "SELECT * FROM currency WHERE name ilike ?";
 
+    //Inserts
+    public static final String INSERT_BRAND = "INSERT INTO brand (name, description) VALUES (?, ?)";
+    public static final String INSERT_CURRENCY = "INSERT INTO currency (name, description) VALUES (?, ?)";
+    public static final String INSERT_PRODUCT = "INSERT INTO currency (name, description, price, brand_id, currency_id) VALUES (?, ?, ?, ?, ?)";
+
+    public static final int BATCH_SIZE = 100;
+
     private DatabaseConstants() {
         //Prevent instantiation
     }

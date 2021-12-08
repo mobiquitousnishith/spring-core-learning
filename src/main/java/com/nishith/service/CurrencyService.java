@@ -1,5 +1,6 @@
 package com.nishith.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,11 @@ public class CurrencyService {
         return currencyRepository.addCurrency(currency);
     }
 
-    public void addCurrencies(List<Currency> currencies) {
+    public void addCurrencies(Collection<Currency> currencies) {
         currencyRepository.addCurrencies(currencies);
+    }
+
+    public List<Currency> getCurrenciesByName(List<String> currencyNames) {
+        return currencyRepository.findCurrencies(currencyNames);
     }
 }

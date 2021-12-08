@@ -1,5 +1,6 @@
 package com.nishith.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,11 @@ public class BrandService {
         return brandRepository.addBrand(brand);
     }
 
-    public void addBrands(List<Brand> brands) {
+    public void addBrands(Collection<Brand> brands) {
         brandRepository.addBrands(brands);
+    }
+
+    public List<Brand> getBrandsByName(List<String> brandNames) {
+        return brandRepository.findBrands(brandNames);
     }
 }

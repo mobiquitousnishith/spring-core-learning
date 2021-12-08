@@ -47,5 +47,18 @@ public class Brand implements Serializable {
         this.description = description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Brand brand = (Brand) o;
+
+        return name.equals(brand.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

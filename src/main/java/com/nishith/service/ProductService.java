@@ -39,6 +39,14 @@ public class ProductService {
         productRepository.addProducts(products);
     }
 
+    public List<Product> getProductsByName(List<String> productNames) {
+        return productRepository.findProducts(productNames);
+    }
+
+    public boolean exists(List<String> productNames) {
+        return productRepository.exists(productNames);
+    }
+
     protected void resolveBrandByName(Product product) {
         Optional<Brand> brandOptional = brandService.getBrandByName(product.getBrand().getName());
         Brand brand = brandOptional.orElseGet(() -> brandService.addBrand(product.getBrand()));
@@ -50,4 +58,5 @@ public class ProductService {
         Currency currency = currencyOptional.orElseGet(() -> currencyService.addCurrency(product.getCurrency()));
         product.setCurrency(currency);
     }
+
 }

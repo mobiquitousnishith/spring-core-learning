@@ -16,13 +16,17 @@ public class DatabaseConstants {
     public static final String CLM_ID = "id";
 
     //Queries
-    public static final String QRY_BRAND_BY_NAME = "SELECT * FROM brand WHERE name ilike ?";
-    public static final String QRY_CURRENCY_BY_NAME = "SELECT * FROM currency WHERE name ilike ?";
+    public static final String QRY_BRAND_BY_NAME = "SELECT * FROM brand WHERE name ILIKE ?";
+    public static final String QRY_CURRENCY_BY_NAME = "SELECT * FROM currency WHERE name ILIKE ?";
+    public static final String QRY_BRAND_LIST_BY_NAME = "SELECT * FROM brand WHERE name IN (:names)";
+    public static final String QRY_CURRENCY_LIST_BY_NAME = "SELECT * FROM currency WHERE name IN (:names)";
+    public static final String QRY_PRODUCT_LIST_BY_NAME = "SELECT * FROM product WHERE name IN (:names)";
+    public static final String QRY_PRODUCTS_EXIST = "SELECT COUNT(*) FROM PRODUCT WHERE name IN (:names)";
 
     //Inserts
     public static final String INSERT_BRAND = "INSERT INTO brand (name, description) VALUES (?, ?)";
     public static final String INSERT_CURRENCY = "INSERT INTO currency (name, description) VALUES (?, ?)";
-    public static final String INSERT_PRODUCT = "INSERT INTO currency (name, description, price, brand_id, currency_id) VALUES (?, ?, ?, ?, ?)";
+    public static final String INSERT_PRODUCT = "INSERT INTO product (name, description, price, brand_id, currency_id) VALUES (?, ?, ?, ?, ?)";
 
     public static final int BATCH_SIZE = 100;
 
